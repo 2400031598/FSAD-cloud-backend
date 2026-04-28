@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.klu.entity.User;
+import com.klu.repository.UserRepository;
 import com.klu.controller.WebSocketController;
 
 @Service
