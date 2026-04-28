@@ -11,13 +11,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.klu.entity.User;
-import com.klu.repository.UserRepository;
+import com.klu.controller.WebSocketController;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository repo;
+
+    @Autowired
+    private WebSocketController webSocketController;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -45,7 +48,12 @@ public class UserService {
         user.setVoterId(voterId);
         user.setFilePath(fileName); // ✅ save file name
 
-        return repo.save(user);
+        User savedUser = repo.save(user);
+
+        // Broadcast real-time update
+        webSocketController.broadcastVoteUpdate("New user registered: " + name);
+
+        return savedUser;
     }
 
     // ✅ LOGIN
